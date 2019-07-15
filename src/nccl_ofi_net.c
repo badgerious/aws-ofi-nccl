@@ -959,9 +959,9 @@ static ncclResult_t ofi_connect(int dev, void *handle, void **sendComm)
 
 	/* Send "connect" message to remote EP */
 	do {
-		rc = fi_tsend(sComm->local_ep, (void *)&local_ep_addr,
-			      MAX_EP_ADDR, NULL, sComm->remote_ep,
-			      sComm->tag | ~max_tag, &req->ctx);
+		rc = fi_tinject(sComm->local_ep, (void *)&local_ep_addr,
+				MAX_EP_ADDR, sComm->remote_ep,
+				sComm->tag | ~max_tag);
 		if (rc == 0)
 			break;
 		else if (rc == -FI_EAGAIN) {
